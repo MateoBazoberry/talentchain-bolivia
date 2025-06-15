@@ -1,0 +1,418 @@
+/* =================================
+   TALENTCHAIN BOLIVIA - CSS PROFESIONAL
+   Colores: Azul Bolivia, Dorado, Blanco
+   ================================= */
+
+/* Variables de colores bolivianos */
+:root {
+  --bolivia-blue: #003DA6;
+  --bolivia-yellow: #FFD100;
+  --bolivia-red: #D52B1E;
+  --dark-blue: #002a75;
+  --light-blue: #4a90e2;
+  --gold: #f39c12;
+  --white: #ffffff;
+  --light-gray: #f8f9fa;
+  --gray: #6c757d;
+  --dark-gray: #343a40;
+  --shadow: rgba(0, 61, 166, 0.1);
+  --shadow-hover: rgba(0, 61, 166, 0.2);
+}
+
+/* Reset y configuración base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  font-family: 'Inter', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+  line-height: 1.6;
+  color: var(--dark-gray);
+  background-color: #fafbfc;
+}
+
+#root {
+  height: 100%;
+  width: 100%;
+}
+
+/* Contenedor principal de la aplicación */
+.app {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+/* =================================
+   HEADER - Diseño profesional
+   ================================= */
+.header {
+  background: linear-gradient(135deg, var(--bolivia-blue) 0%, var(--dark-blue) 100%);
+  color: var(--white);
+  padding: 3rem 2rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+}
+
+.header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><g fill="%23ffffff" fill-opacity="0.05"><polygon points="0 0 60 0 60 60"/></g></g></svg>');
+  opacity: 0.1;
+}
+
+.header h1 {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  position: relative;
+  z-index: 2;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.header p {
+  font-size: 1.3rem;
+  opacity: 0.95;
+  font-weight: 400;
+  position: relative;
+  z-index: 2;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* =================================
+   CONTENIDO PRINCIPAL - Pantalla completa
+   ================================= */
+.main {
+  flex: 1;
+  width: 100%;
+  padding: 4rem 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  background-color: #fafbfc;
+}
+
+.hero {
+  width: 100%;
+  max-width: 1200px;
+  text-align: center;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.hero h2 {
+  font-size: 2.5rem;
+  font-weight: 600;
+  color: var(--dark-blue);
+  margin-bottom: 1.5rem;
+  line-height: 1.2;
+}
+
+.hero > p {
+  font-size: 1.2rem;
+  color: var(--gray);
+  margin: 0 auto 4rem auto;
+  max-width: 700px;
+  line-height: 1.7;
+  font-weight: 400;
+}
+
+/* =================================
+   TARJETAS DE CARACTERÍSTICAS - Centradas y profesionales
+   ================================= */
+.features {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+  margin: 4rem auto;
+  max-width: 1200px;
+  width: 100%;
+  padding: 0 2rem;
+}
+
+.feature {
+  background: var(--white);
+  padding: 2.5rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px var(--shadow);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  flex: 1;
+  min-width: 300px;
+  max-width: 350px;
+  text-align: center;
+  border: 1px solid rgba(0, 61, 166, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.feature::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--bolivia-blue), var(--light-blue));
+}
+
+.feature:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 40px var(--shadow-hover);
+  border-color: var(--bolivia-blue);
+}
+
+.feature:nth-child(1):hover::before {
+  background: linear-gradient(90deg, var(--bolivia-blue), var(--light-blue));
+}
+
+.feature:nth-child(2):hover::before {
+  background: linear-gradient(90deg, var(--light-blue), var(--bolivia-blue));
+}
+
+.feature:nth-child(3):hover::before {
+  background: linear-gradient(90deg, var(--gold), var(--bolivia-yellow));
+}
+
+.feature h3 {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--dark-blue);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.feature p {
+  color: var(--gray);
+  line-height: 1.6;
+  font-size: 1rem;
+}
+
+/* =================================
+   BOTONES - Diseño profesional boliviano
+   ================================= */
+.buttons {
+  margin: 4rem auto 0 auto;
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  max-width: 400px;
+  width: 100%;
+}
+
+.btn-primary, .btn-secondary {
+  padding: 16px 32px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  min-width: 160px;
+  position: relative;
+  overflow: hidden;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--bolivia-blue) 0%, var(--light-blue) 100%);
+  color: var(--white);
+  box-shadow: 0 4px 15px rgba(0, 61, 166, 0.3);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 61, 166, 0.4);
+  background: linear-gradient(135deg, var(--dark-blue) 0%, var(--bolivia-blue) 100%);
+}
+
+.btn-secondary {
+  background: var(--white);
+  color: var(--bolivia-blue);
+  border: 2px solid var(--bolivia-blue);
+  box-shadow: 0 4px 15px rgba(0, 61, 166, 0.1);
+}
+
+.btn-secondary:hover {
+  background: var(--bolivia-blue);
+  color: var(--white);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 61, 166, 0.3);
+}
+
+/* =================================
+   FOOTER - Profesional
+   ================================= */
+.footer {
+  background: var(--dark-gray);
+  color: var(--white);
+  text-align: center;
+  padding: 2rem;
+  margin-top: auto;
+  width: 100%;
+}
+
+.footer p {
+  font-size: 0.95rem;
+  opacity: 0.9;
+}
+
+/* =================================
+   RESPONSIVE DESIGN - Mobile First
+   ================================= */
+@media (max-width: 768px) {
+  .header {
+    padding: 2.5rem 1rem;
+  }
+  
+  .header h1 {
+    font-size: 2.2rem;
+  }
+  
+  .header p {
+    font-size: 1.1rem;
+  }
+  
+  .main {
+    padding: 2rem 0;
+  }
+  
+  .hero {
+    padding: 0 1rem;
+  }
+  
+  .hero h2 {
+    font-size: 2rem;
+  }
+  
+  .hero > p {
+    font-size: 1.1rem;
+    margin-bottom: 3rem;
+  }
+  
+  .features {
+    flex-direction: column;
+    align-items: center;
+    margin: 3rem auto;
+    padding: 0 1rem;
+  }
+  
+  .feature {
+    min-width: 280px;
+    max-width: 100%;
+    width: 100%;
+  }
+  
+  .buttons {
+    flex-direction: column;
+    align-items: center;
+    margin-top: 3rem;
+    padding: 0 1rem;
+  }
+  
+  .btn-primary, .btn-secondary {
+    width: 100%;
+    max-width: 280px;
+  }
+}
+
+@media (max-width: 480px) {
+  .header {
+    padding: 2rem 1rem;
+  }
+  
+  .header h1 {
+    font-size: 1.8rem;
+  }
+  
+  .main {
+    padding: 1.5rem 0;
+  }
+  
+  .hero h2 {
+    font-size: 1.6rem;
+  }
+  
+  .feature {
+    padding: 2rem;
+  }
+}
+
+/* =================================
+   ANIMACIONES Y EFECTOS
+   ================================= */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero {
+  animation: fadeInUp 0.8s ease-out;
+}
+
+.feature {
+  animation: fadeInUp 0.8s ease-out;
+}
+
+.feature:nth-child(1) { animation-delay: 0.1s; }
+.feature:nth-child(2) { animation-delay: 0.2s; }
+.feature:nth-child(3) { animation-delay: 0.3s; }
+
+/* =================================
+   ACCESIBILIDAD
+   ================================= */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Focus states para accesibilidad */
+.btn-primary:focus,
+.btn-secondary:focus {
+  outline: 3px solid var(--bolivia-yellow);
+  outline-offset: 2px;
+}
+.btn-secondary {
+  text-decoration: none !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-secondary:hover {
+  text-decoration: none !important;
+}

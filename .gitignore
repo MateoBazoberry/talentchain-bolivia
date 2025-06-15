@@ -1,0 +1,52 @@
+# ========================================
+# TALENTCHAIN BOLIVIA - ARCHIVOS A IGNORAR
+# ========================================
+
+# Dependencias de Node.js (NO subirlas - son muchos archivos)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Variables de entorno (CONTIENEN CONTRASEÑAS SECRETAS)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Archivos de construcción
+dist/
+build/
+*.tgz
+*.tar.gz
+
+# Logs del sistema
+logs
+*.log
+
+# Archivos temporales del sistema
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Configuraciones de editores
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Archivos de cache
+.cache/
+.parcel-cache/
+
+# ========================================
+# IMPORTANTE: LA BASE DE DATOS SÍ SE SUBE
+# ========================================
+# backend/database/talentchain.sqlite SÍ se sube
+# porque queremos que la base de datos viaje con el proyecto

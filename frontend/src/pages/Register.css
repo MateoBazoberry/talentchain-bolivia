@@ -1,0 +1,308 @@
+/* =================================
+   REGISTER PAGE - Diseño profesional
+   ================================= */
+
+.register-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+}
+
+/* Header del registro */
+.register-header {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.back-btn {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.back-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateX(-3px);
+}
+
+.register-header h1 {
+  color: white;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+/* Tarjeta principal de registro */
+.register-card {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.register-content {
+  background: white;
+  padding: 3rem;
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.register-content h2 {
+  font-size: 2.2rem;
+  color: #003DA6;
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+
+.register-content > p {
+  color: #6c757d;
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 1.1rem;
+}
+
+/* Formulario */
+.register-form {
+  margin-bottom: 2rem;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 600;
+  color: #343a40;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}
+
+.form-input, .form-select {
+  width: 100%;
+  padding: 15px;
+  border: 2px solid #e9ecef;
+  border-radius: 10px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background-color: #f8f9fa;
+}
+
+.form-input:focus, .form-select:focus {
+  outline: none;
+  border-color: #003DA6;
+  background-color: white;
+  box-shadow: 0 0 0 3px rgba(0, 61, 166, 0.1);
+}
+
+.form-input::placeholder {
+  color: #adb5bd;
+}
+
+.form-select {
+  cursor: pointer;
+}
+
+/* Estados de error */
+.error-message {
+  background: #f8d7da;
+  color: #721c24;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  border: 1px solid #f5c6cb;
+  text-align: center;
+  font-weight: 500;
+}
+
+.form-input.error, .form-select.error {
+  border-color: #dc3545;
+  background-color: #fff5f5;
+}
+
+.field-error {
+  color: #dc3545;
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
+  display: block;
+}
+
+/* Botón de registro */
+.btn-register {
+  width: 100%;
+  background: linear-gradient(135deg, #003DA6 0%, #4a90e2 100%);
+  color: white;
+  border: none;
+  padding: 16px;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 1rem;
+}
+
+.btn-register:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 61, 166, 0.3);
+  background: linear-gradient(135deg, #002a75 0%, #003DA6 100%);
+}
+
+.btn-register:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+.form-input:disabled, .form-select:disabled {
+  background-color: #f8f9fa;
+  color: #6c757d;
+  cursor: not-allowed;
+}
+
+/* Enlaces del registro */
+.register-links {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.register-links p {
+  color: #6c757d;
+  margin: 0;
+}
+
+.login-link {
+  color: #003DA6;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.login-link:hover {
+  text-decoration: underline;
+}
+
+/* Información del proyecto */
+.project-info {
+  background: #f8f9fa;
+  padding: 1.5rem;
+  border-radius: 10px;
+  border-left: 4px solid #003DA6;
+}
+
+.project-info h4 {
+  color: #003DA6;
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+}
+
+.project-info ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.project-info li {
+  color: #6c757d;
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+
+/* Layout de formulario en grid para pantallas grandes */
+@media (min-width: 768px) {
+  .register-content {
+    max-width: 700px;
+  }
+  
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .register-container {
+    padding: 1rem;
+  }
+  
+  .register-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  
+  .register-header h1 {
+    font-size: 1.5rem;
+  }
+  
+  .register-content {
+    padding: 2rem;
+    max-height: 85vh;
+  }
+  
+  .register-content h2 {
+    font-size: 1.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .register-content {
+    padding: 1.5rem;
+  }
+  
+  .register-content h2 {
+    font-size: 1.5rem;
+  }
+}
+/* =================================
+   CORRECCIONES DE CONTRASTE
+   ================================= */
+
+/* Mejorar contraste en inputs */
+.form-input, .form-select {
+  color: #212529 !important; /* Texto más oscuro */
+  background-color: #ffffff !important; /* Fondo blanco */
+  border: 2px solid #ced4da !important;
+}
+
+.form-input:focus, .form-select:focus {
+  color: #212529 !important;
+  background-color: #ffffff !important;
+  border-color: #003DA6 !important;
+  box-shadow: 0 0 0 3px rgba(0, 61, 166, 0.25) !important;
+}
+
+.form-input::placeholder {
+  color: #6c757d !important;
+  opacity: 1;
+}
+
+/* Mejorar contraste en estados deshabilitados */
+.form-input:disabled, .form-select:disabled {
+  background-color: #e9ecef !important;
+  color: #495057 !important;
+  border-color: #ced4da !important;
+}
+
+/* Mejorar contraste en campos con error */
+.form-input.error, .form-select.error {
+  color: #212529 !important;
+  background-color: #fff5f5 !important;
+  border-color: #dc3545 !important;
+}
