@@ -50,19 +50,36 @@ function Login() {
         password: password
       });
 
-      if (resultado.exito) {
-        console.log('✅ Login exitoso:', resultado.usuario);
-        console.log('🔑 Token recibido:', resultado.token ? 'Sí' : 'No');
-        
-        // ✅ LOGIN EXITOSO - Navegación directa sin alertas
-        navigate('/dashboard');
-        
-      } else {
-        // ❌ CREDENCIALES INCORRECTAS O ERROR DE LA API
-        setErrors({ 
-          general: resultado.error || 'Error desconocido en login'
-        });
-      }
+if (resultado.exito) {
+  console.log('✅ Login exitoso:', resultado.usuario);
+  console.log('🔑 Token recibido:', resultado.token ? 'Sí' : 'No');
+  console.log('📦 Datos completos del resultado:', resultado);
+  
+  // Verificar localStorage después del login CON DELAY Y NAVEGAR DESPUÉS
+  setTimeout(() => {
+    const tokenGuardado = localStorage.getItem('talentchain_token');
+    const usuarioGuardado = localStorage.getItem('talentchain_usuario');
+    console.log('💾 Token en localStorage:', tokenGuardado);
+    console.log('👤 Usuario en localStorage:', usuarioGuardado);
+    
+    // NAVEGAR SOLO DESPUÉS DE VERIFICAR EL TOKEN
+    if (tokenGuardado) {
+      console.log('🚀 Navegando al dashboard...');
+      navigate('/dashboard');
+    } else {
+      console.log('❌ Error: Token no se guardó correctamente');
+      setErrors({ 
+        general: 'Error guardando la sesión. Intenta nuevamente.'
+      });
+    }
+  }, 300); // Esperar 300ms para asegurar que se guardó
+  
+} else {
+  // ❌ CREDENCIALES INCORRECTAS O ERROR DE LA API
+  setErrors({ 
+    general: resultado.error || 'Error desconocido en login'
+  });
+}
       
     } catch (error) {
       console.error('❌ Error inesperado en login:', error);

@@ -154,17 +154,15 @@ async function loginUsuario(req, res) {
     }
     
     // Crear token JWT
-    const token = jwt.sign(
-      { 
-        userId: usuario.id,
-        email: usuario.email,
-        tipoUsuario: usuario.tipoUsuario
-      },
-      process.env.JWT_SECRETO,
-      { expiresIn: process.env.JWT_EXPIRA_EN || '7d' }
-    );
-    
-    console.log('✅ Login exitoso para:', email);
+const token = jwt.sign(
+  { 
+    id: usuario.id,            // ← Usar "id" en lugar de "userId"
+    email: usuario.email,
+    tipoUsuario: usuario.tipoUsuario
+  },
+  process.env.JWT_SECRETO,
+  { expiresIn: process.env.JWT_EXPIRA_EN || '7d' }
+);
     
     // Respuesta exitosa
     res.json({

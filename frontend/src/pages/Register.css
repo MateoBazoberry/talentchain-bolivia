@@ -1,46 +1,183 @@
 /* =================================
-   REGISTER PAGE - Diseño profesional
+   REGISTER PAGE - Diseño profesional unificado
    ================================= */
+
+:root {
+  /* Colores principales */
+  --primary-blue: #003DA6;
+  --primary-blue-dark: #002a75;
+  --primary-blue-light: #4a90e2;
+  --accent-yellow: #FFD100;
+  
+  /* Grises */
+  --gray-50: #f8f9fa;
+  --gray-100: #e9ecef;
+  --gray-200: #dee2e6;
+  --gray-300: #ced4da;
+  --gray-400: #adb5bd;
+  --gray-500: #6c757d;
+  --gray-600: #495057;
+  --gray-700: #343a40;
+  --gray-800: #212529;
+  --gray-900: #1a1e21;
+  
+  /* Estados */
+  --success: #28a745;
+  --danger: #dc3545;
+  --warning: #ffc107;
+  --info: #17a2b8;
+  
+  /* Sombras unificadas */
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.15);
+  --shadow-xl: 0 16px 40px rgba(0, 0, 0, 0.2);
+  
+  /* Border radius unificado */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  
+  /* Espaciado */
+  --spacing-xs: 0.5rem;
+  --spacing-sm: 1rem;
+  --spacing-md: 1.5rem;
+  --spacing-lg: 2rem;
+  --spacing-xl: 3rem;
+}
 
 .register-container {
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, 
+    var(--primary-blue) 0%, 
+    var(--primary-blue-dark) 25%, 
+    #1e3a8a 50%, 
+    var(--primary-blue) 75%, 
+    var(--primary-blue-light) 100%);
+  background-size: 400% 400%;
+  animation: gradientShift 15s ease infinite;
   display: flex;
   flex-direction: column;
-  padding: 2rem;
+  padding: var(--spacing-lg);
+  position: relative;
+  overflow: hidden;
 }
 
-/* Header del registro */
+/* Animación del gradiente de fondo */
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Efectos visuales de fondo */
+.register-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 20% 30%, rgba(255, 209, 0, 0.2) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(74, 144, 226, 0.3) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Partículas flotantes */
+.register-container::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(2px 2px at 20px 30px, rgba(255, 255, 255, 0.4), transparent),
+    radial-gradient(2px 2px at 40px 70px, rgba(255, 209, 0, 0.6), transparent),
+    radial-gradient(1px 1px at 90px 40px, rgba(255, 255, 255, 0.3), transparent),
+    radial-gradient(1px 1px at 130px 80px, rgba(74, 144, 226, 0.4), transparent),
+    radial-gradient(2px 2px at 160px 30px, rgba(255, 255, 255, 0.2), transparent);
+  background-repeat: repeat;
+  background-size: 200px 100px;
+  animation: sparkle 20s linear infinite;
+  pointer-events: none;
+  z-index: 1;
+}
+
+@keyframes sparkle {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-100px);
+  }
+}
+
+/* Header del registro con efecto glassmorphism */
 .register-header {
   display: flex;
   align-items: center;
-  gap: 2rem;
-  margin-bottom: 2rem;
+  gap: var(--spacing-lg);
+  margin-bottom: var(--spacing-lg);
+  position: relative;
+  z-index: 10;
 }
 
 .back-btn {
   background: rgba(255, 255, 255, 0.2);
   color: white;
-  border: none;
+  border: 2px solid rgba(255, 255, 255, 0.3);
   padding: 12px 20px;
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   cursor: pointer;
   font-size: 1rem;
   transition: all 0.3s ease;
+  font-weight: 500;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
 
 .back-btn:hover {
   background: rgba(255, 255, 255, 0.3);
-  transform: translateX(-3px);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: translateX(-3px) scale(1.05);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
 }
 
 .register-header h1 {
   color: white;
   font-size: 2rem;
   font-weight: 700;
+  margin: 0;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  position: relative;
 }
 
-/* Tarjeta principal de registro */
+.register-header h1::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent-yellow), transparent);
+  transition: width 0.5s ease;
+}
+
+.register-header h1:hover::after {
+  width: 100%;
+}
+
+/* Tarjeta principal de registro con glassmorphism */
 .register-card {
   flex: 1;
   display: flex;
@@ -49,69 +186,167 @@
   max-width: 1200px;
   margin: 0 auto;
   width: 100%;
+  position: relative;
+  z-index: 10;
 }
 
 .register-content {
-  background: white;
-  padding: 3rem;
-  border-radius: 20px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  padding: var(--spacing-xl);
+  border-radius: var(--radius-xl);
+  box-shadow: 
+    0 20px 60px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(255, 255, 255, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
   width: 100%;
-  max-width: 600px;
-  max-height: 90vh;
+  max-width: 900px;
+  max-height: 85vh;
   overflow-y: auto;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  position: relative;
+  transform: translateY(0);
+  transition: all 0.3s ease;
+}
+
+.register-content:hover {
+  transform: translateY(-5px);
+  box-shadow: 
+    0 30px 80px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(255, 255, 255, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+/* Scrollbar personalizada elegante */
+.register-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.register-content::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  margin: 10px 0;
+}
+
+.register-content::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-blue-light) 100%);
+  border-radius: 10px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.register-content::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, var(--primary-blue-dark) 0%, var(--primary-blue) 100%);
+  box-shadow: 0 0 10px rgba(0, 61, 166, 0.5);
+}
+
+/* Scrollbar para Firefox */
+.register-content {
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary-blue) rgba(255, 255, 255, 0.1);
+}
+
+/* Efecto de brillo en la tarjeta */
+.register-content::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, 
+    transparent 0%, 
+    rgba(255, 209, 0, 0.4) 20%, 
+    transparent 40%, 
+    transparent 60%, 
+    rgba(74, 144, 226, 0.4) 80%, 
+    transparent 100%);
+  border-radius: var(--radius-xl);
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.register-content:hover::before {
+  opacity: 1;
+}
+
+/* Gradiente sutil en los bordes del contenido */
+.register-content::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 8px; /* Espacio para el scrollbar */
+  height: 20px;
+  background: linear-gradient(to bottom, 
+    rgba(255, 255, 255, 0.8) 0%, 
+    transparent 100%);
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Mejorar el formulario para mejor distribución */
+.register-form {
+  margin-bottom: var(--spacing-lg);
+  position: relative;
+  z-index: 2;
 }
 
 .register-content h2 {
   font-size: 2.2rem;
-  color: #003DA6;
-  margin-bottom: 0.5rem;
+  color: var(--primary-blue);
+  margin-bottom: var(--spacing-xs);
   text-align: center;
+  font-weight: 700;
 }
 
 .register-content > p {
-  color: #6c757d;
+  color: var(--gray-500);
   text-align: center;
-  margin-bottom: 2rem;
+  margin-bottom: var(--spacing-lg);
   font-size: 1.1rem;
 }
 
 /* Formulario */
 .register-form {
-  margin-bottom: 2rem;
+  margin-bottom: var(--spacing-lg);
 }
 
 .form-group {
-  margin-bottom: 1.5rem;
+  margin-bottom: var(--spacing-md);
 }
 
 .form-group label {
   display: block;
   font-weight: 600;
-  color: #343a40;
-  margin-bottom: 0.5rem;
+  color: var(--gray-700);
+  margin-bottom: var(--spacing-xs);
   font-size: 1rem;
 }
 
 .form-input, .form-select {
   width: 100%;
   padding: 15px;
-  border: 2px solid #e9ecef;
-  border-radius: 10px;
+  border: 2px solid var(--gray-300);
+  border-radius: var(--radius-sm);
   font-size: 1rem;
   transition: all 0.3s ease;
-  background-color: #f8f9fa;
+  background-color: white;
+  color: var(--gray-800);
+  font-weight: 500;
 }
 
 .form-input:focus, .form-select:focus {
   outline: none;
-  border-color: #003DA6;
-  background-color: white;
-  box-shadow: 0 0 0 3px rgba(0, 61, 166, 0.1);
+  border-color: var(--primary-blue);
+  box-shadow: 0 0 0 3px rgba(0, 61, 166, 0.25);
 }
 
 .form-input::placeholder {
-  color: #adb5bd;
+  color: var(--gray-400);
 }
 
 .form-select {
@@ -123,44 +358,84 @@
   background: #f8d7da;
   color: #721c24;
   padding: 12px;
-  border-radius: 8px;
-  margin-bottom: 1.5rem;
-  border: 1px solid #f5c6cb;
+  border-radius: var(--radius-sm);
+  margin-bottom: var(--spacing-md);
+  border: 2px solid #f5c6cb;
   text-align: center;
   font-weight: 500;
 }
 
 .form-input.error, .form-select.error {
-  border-color: #dc3545;
+  border-color: var(--danger);
   background-color: #fff5f5;
 }
 
 .field-error {
-  color: #dc3545;
+  color: var(--danger);
   font-size: 0.85rem;
   margin-top: 0.25rem;
   display: block;
 }
 
-/* Botón de registro */
+/* Botón de registro con efectos avanzados */
 .btn-register {
   width: 100%;
-  background: linear-gradient(135deg, #003DA6 0%, #4a90e2 100%);
+  background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-blue-light) 50%, var(--primary-blue) 100%);
+  background-size: 200% 200%;
   color: white;
-  border: none;
+  border: 2px solid var(--primary-blue);
   padding: 16px;
-  border-radius: 10px;
+  border-radius: var(--radius-sm);
   font-size: 1.1rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  margin-top: 1rem;
+  margin-top: var(--spacing-sm);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 61, 166, 0.4);
+}
+
+.btn-register::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.5s ease;
 }
 
 .btn-register:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(0, 61, 166, 0.3);
-  background: linear-gradient(135deg, #002a75 0%, #003DA6 100%);
+  background: linear-gradient(135deg, var(--primary-blue-dark) 0%, var(--primary-blue) 50%, var(--primary-blue-light) 100%);
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 
+    0 8px 30px rgba(0, 61, 166, 0.6),
+    0 0 20px rgba(74, 144, 226, 0.4);
+  animation: pulseRegister 2s infinite;
+}
+
+.btn-register:hover::before {
+  left: 100%;
+}
+
+@keyframes pulseRegister {
+  0% {
+    box-shadow: 
+      0 8px 30px rgba(0, 61, 166, 0.6),
+      0 0 20px rgba(74, 144, 226, 0.4);
+  }
+  50% {
+    box-shadow: 
+      0 8px 30px rgba(0, 61, 166, 0.8),
+      0 0 30px rgba(74, 144, 226, 0.6);
+  }
+  100% {
+    box-shadow: 
+      0 8px 30px rgba(0, 61, 166, 0.6),
+      0 0 20px rgba(74, 144, 226, 0.4);
+  }
 }
 
 .btn-register:disabled {
@@ -170,24 +445,24 @@
 }
 
 .form-input:disabled, .form-select:disabled {
-  background-color: #f8f9fa;
-  color: #6c757d;
+  background-color: var(--gray-100);
+  color: var(--gray-500);
   cursor: not-allowed;
 }
 
 /* Enlaces del registro */
 .register-links {
   text-align: center;
-  margin-bottom: 2rem;
+  margin-bottom: var(--spacing-lg);
 }
 
 .register-links p {
-  color: #6c757d;
+  color: var(--gray-500);
   margin: 0;
 }
 
 .login-link {
-  color: #003DA6;
+  color: var(--primary-blue);
   text-decoration: none;
   font-weight: 600;
 }
@@ -198,16 +473,19 @@
 
 /* Información del proyecto */
 .project-info {
-  background: #f8f9fa;
-  padding: 1.5rem;
-  border-radius: 10px;
-  border-left: 4px solid #003DA6;
+  background: linear-gradient(135deg, var(--gray-50) 0%, var(--gray-100) 100%);
+  padding: var(--spacing-md);
+  border-radius: var(--radius-sm);
+  border: 2px solid var(--gray-200);
+  border-left: 4px solid var(--primary-blue);
+  box-shadow: var(--shadow-sm);
 }
 
 .project-info h4 {
-  color: #003DA6;
-  margin-bottom: 1rem;
+  color: var(--primary-blue);
+  margin-bottom: var(--spacing-sm);
   font-size: 1.1rem;
+  font-weight: 600;
 }
 
 .project-info ul {
@@ -217,34 +495,162 @@
 }
 
 .project-info li {
-  color: #6c757d;
-  margin-bottom: 0.5rem;
+  color: var(--gray-500);
+  margin-bottom: var(--spacing-xs);
   font-size: 0.95rem;
+  padding-left: 1rem;
+  position: relative;
 }
 
-/* Layout de formulario en grid para pantallas grandes */
+.project-info li::before {
+  content: "•";
+  color: var(--primary-blue);
+  font-weight: bold;
+  position: absolute;
+  left: 0;
+}
+
+/* Layout de formulario en grid para pantallas grandes - MUCHO MÁS ANCHO */
 @media (min-width: 768px) {
   .register-content {
-    max-width: 700px;
+    max-width: 950px;
+    padding: calc(var(--spacing-xl) + 1rem);
   }
   
+  /* Grid principal de 3 columnas para mejor distribución */
+  .form-grid-main {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: var(--spacing-lg);
+    margin-bottom: var(--spacing-md);
+  }
+  
+  /* Grid de 2 columnas para algunos campos */
   .form-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 1rem;
+    gap: var(--spacing-lg);
+    margin-bottom: var(--spacing-md);
   }
+  
+  /* Campos que deben ocupar ancho completo */
+  .form-full-width {
+    grid-column: 1 / -1;
+  }
+  
+  /* Campos que ocupan 2 columnas en grid de 3 */
+  .form-two-thirds {
+    grid-column: span 2;
+  }
+  
+  /* Información del proyecto en 2 columnas */
+  .info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-lg);
+    align-items: start;
+  }
+}
+
+@media (min-width: 1024px) {
+  .register-content {
+    max-width: 1100px;
+    padding: calc(var(--spacing-xl) + 2rem);
+  }
+  
+  /* En pantallas muy grandes, usar 4 columnas para campos simples */
+  .form-grid-wide {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: var(--spacing-lg);
+    margin-bottom: var(--spacing-md);
+  }
+}
+
+/* Inputs optimizados para layout más ancho */
+.form-input, .form-select {
+  padding: 16px 18px !important;
+  font-size: 1rem !important;
+  line-height: 1.4 !important;
+  min-height: 52px !important;
+  box-sizing: border-box !important;
+}
+
+/* Mejorar espaciado para layout horizontal */
+.form-group {
+  margin-bottom: var(--spacing-sm) !important;
+}
+
+.form-group:last-of-type {
+  margin-bottom: var(--spacing-md) !important;
+}
+
+/* Header más compacto para aprovechar espacio */
+.register-content h2 {
+  font-size: 1.8rem !important;
+  margin-bottom: var(--spacing-xs) !important;
+  text-align: center;
+}
+
+.register-content > p {
+  margin-bottom: var(--spacing-sm) !important;
+  font-size: 0.95rem !important;
+  text-align: center;
+}
+
+/* Botones en línea para aprovechar el ancho */
+.register-links {
+  margin-bottom: var(--spacing-sm) !important;
+  text-align: center;
+}
+
+/* Información del proyecto más compacta */
+.project-info {
+  margin-top: var(--spacing-sm) !important;
+  padding: var(--spacing-md) !important;
+}
+
+.project-info h4 {
+  font-size: 0.95rem !important;
+  margin-bottom: var(--spacing-xs) !important;
+}
+
+.project-info ul {
+  columns: 2;
+  column-gap: var(--spacing-md);
+  margin: 0;
+}
+
+.project-info li {
+  font-size: 0.85rem !important;
+  margin-bottom: 0.25rem !important;
+  break-inside: avoid;
+}
+
+/* Scrollbar ajustada para contenido más ancho */
+.register-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+/* Botones del formulario en línea */
+.register-links {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--spacing-xs);
+  flex-wrap: wrap;
 }
 
 /* Responsive */
 @media (max-width: 768px) {
   .register-container {
-    padding: 1rem;
+    padding: var(--spacing-sm);
   }
   
   .register-header {
     flex-direction: column;
     align-items: flex-start;
-    gap: 1rem;
+    gap: var(--spacing-sm);
   }
   
   .register-header h1 {
@@ -252,7 +658,7 @@
   }
   
   .register-content {
-    padding: 2rem;
+    padding: var(--spacing-lg);
     max-height: 85vh;
   }
   
@@ -263,46 +669,10 @@
 
 @media (max-width: 480px) {
   .register-content {
-    padding: 1.5rem;
+    padding: var(--spacing-md);
   }
   
   .register-content h2 {
     font-size: 1.5rem;
   }
-}
-/* =================================
-   CORRECCIONES DE CONTRASTE
-   ================================= */
-
-/* Mejorar contraste en inputs */
-.form-input, .form-select {
-  color: #212529 !important; /* Texto más oscuro */
-  background-color: #ffffff !important; /* Fondo blanco */
-  border: 2px solid #ced4da !important;
-}
-
-.form-input:focus, .form-select:focus {
-  color: #212529 !important;
-  background-color: #ffffff !important;
-  border-color: #003DA6 !important;
-  box-shadow: 0 0 0 3px rgba(0, 61, 166, 0.25) !important;
-}
-
-.form-input::placeholder {
-  color: #6c757d !important;
-  opacity: 1;
-}
-
-/* Mejorar contraste en estados deshabilitados */
-.form-input:disabled, .form-select:disabled {
-  background-color: #e9ecef !important;
-  color: #495057 !important;
-  border-color: #ced4da !important;
-}
-
-/* Mejorar contraste en campos con error */
-.form-input.error, .form-select.error {
-  color: #212529 !important;
-  background-color: #fff5f5 !important;
-  border-color: #dc3545 !important;
 }

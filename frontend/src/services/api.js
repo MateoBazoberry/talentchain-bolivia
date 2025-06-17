@@ -64,14 +64,27 @@ export async function loginUsuario(credenciales) {
     const data = await response.json();
     console.log('📥 Respuesta del backend:', data);
     
+    // 🔍 NUEVOS LOGS PARA DEBUG:
+    console.log('🔑 ¿Tiene token?', !!data.token);
+    console.log('🎫 Token value:', data.token);
+    console.log('👤 ¿Tiene usuario?', !!data.usuario);
+    console.log('📊 Estructura completa:', JSON.stringify(data, null, 2));
+    
     if (!response.ok) {
       throw new Error(data.mensaje || 'Error en el login');
     }
     
     // Guardar token en localStorage para mantener sesión
     if (data.token) {
+      console.log('💾 Guardando token en localStorage...');
       localStorage.setItem('talentchain_token', data.token);
       localStorage.setItem('talentchain_usuario', JSON.stringify(data.usuario));
+      
+      // Verificar que se guardó
+      const tokenGuardado = localStorage.getItem('talentchain_token');
+      console.log('✅ Token guardado exitosamente:', !!tokenGuardado);
+    } else {
+      console.log('❌ No se recibió token del backend');
     }
     
     return {
@@ -185,6 +198,68 @@ export async function peticionAutenticada(url, opciones = {}) {
     return data;
   } catch (error) {
     console.error('Error en petición autenticada:', error);
+    throw error;
+  }
+}
+
+// ========================================
+// FUNCIONES DE CREDENCIALES ACADÉMICAS
+// ========================================
+
+// Obtener todas las credenciales del usuario
+export async function obtenerCredenciales() {
+  try {
+    return await peticionAutenticada('/credenciales');
+  } catch (error) {
+    console.error('Error obteniendo credenciales:', error);
+    throw error;
+  }
+}
+
+// Obtener una credencial específica por ID
+export async function obtenerCredencialPorId(id) {
+  try {
+    return await peticionAutenticada(`/credenciales/${id}`);
+  } catch (error) {
+    console.error('Error obteniendo credencial por ID:', error);
+    throw error;
+  }
+}
+
+// Crear nueva credencial académica
+export async function crearCredencial(datosCredencial) {
+  try {
+    return await peticionAutenticada('/credenciales', {
+      method: 'POST',
+      body: JSON.stringify(datosCredencial)
+    });
+  } catch (error) {
+    console.error('Error creando credencial:', error);
+    throw error;
+  }
+}
+
+// Actualizar credencial existente
+export async function actualizarCredencial(id, datosCredencial) {
+  try {
+    return await peticionAutenticada(`/credenciales/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(datosCredencial)
+    });
+  } catch (error) {
+    console.error('Error actualizando credencial:', error);
+    throw error;
+  }
+}
+
+// Eliminar credencial
+export async function eliminarCredencial(id) {
+  try {
+    return await peticionAutenticada(`/credenciales/${id}`, {
+      method: 'DELETE'
+    });
+  } catch (error) {
+    console.error('Error eliminando credencial:', error);
     throw error;
   }
 }

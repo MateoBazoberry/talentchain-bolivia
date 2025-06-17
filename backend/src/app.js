@@ -8,7 +8,15 @@ require('dotenv').config();
 
 // Importar configuración de base de datos
 const { probarConexion, sincronizarBaseDatos } = require('./config/baseDatos');
+
+// Importar todos los modelos
 const Usuario = require('./modelos/Usuario');
+const CredencialAcademica = require('./modelos/CredencialAcademica');
+const ExperienciaLaboral = require('./modelos/ExperienciaLaboral');
+const Habilidad = require('./modelos/Habilidad');
+
+// Importar y definir relaciones
+const definirRelaciones = require('./config/relaciones');
 
 // Crear la aplicación Express (nuestro servidor web)
 const app = express();
@@ -60,12 +68,19 @@ app.use((req, res, next) => {
 app.get('/', (req, res) => {
   res.json({
     mensaje: '🚀 TalentChain Bolivia Backend funcionando correctamente',
-    version: '1.0.0',
+    version: '2.0.0',
     proyecto: 'Plataforma de Verificación de Credenciales Académicas',
     desarrollador: 'Mateo Bazoberry - UNIFRANZ',
     semestre: '5to Semestre - Ingeniería de Sistemas',
     fecha: new Date().toLocaleString('es-BO', { timeZone: 'America/La_Paz' }),
-    estado: 'en línea'
+    estado: 'en línea',
+    modelos_disponibles: [
+      'usuarios',
+      'credenciales_academicas',
+      'experiencia_laboral', 
+      'habilidades'
+    ],
+    sesion_actual: 3
   });
 });
 
@@ -100,9 +115,9 @@ app.get('/info', (req, res) => {
     gestion: 'I-2025',
     tecnologias: {
       frontend: 'React + Vite',
-      backend: 'Node.js + Express + MySQL',
+      backend: 'Node.js + Express + SQLite',
       blockchain: 'Ethereum + Solidity (próximamente)',
-      baseDatos: 'MySQL + Sequelize'
+      baseDatos: 'SQLite + Sequelize'
     },
     objetivos: [
       'Eliminar fraude en credenciales académicas',
@@ -116,6 +131,9 @@ app.get('/info', (req, res) => {
 // Rutas de autenticación
 const rutasAutenticacion = require('./rutas/autenticacion');
 app.use('/auth', rutasAutenticacion);
+// Rutas de credenciales académicas
+const rutasCredenciales = require('./rutas/credenciales');
+app.use('/credenciales', rutasCredenciales);
 
 // ========================================
 // MANEJO DE ERRORES
@@ -164,19 +182,30 @@ async function iniciarServidor() {
     
     if (!baseDatosConectada) {
       console.log('⚠️  Base de datos no conectada, pero el servidor arrancará de todas formas');
-      console.log('💡 Para conectar MySQL:');
-      console.log('   1. Abre XAMPP Control Panel');
-      console.log('   2. Inicia Apache y MySQL');
+      console.log('💡 Para conectar SQLite:');
+      console.log('   1. Verifica que la carpeta database existe');
+      console.log('   2. Verifica permisos de escritura');
       console.log('   3. Reinicia este servidor');
     }
     
-    // PASO 2: Sincronizar base de datos (crear tablas)
+    // PASO 2: Definir relaciones entre modelos
+    if (baseDatosConectada) {
+      console.log('🔗 Definiendo relaciones entre modelos...');
+      definirRelaciones();
+      console.log('✅ Relaciones entre modelos definidas correctamente');
+    }
+    
+    // PASO 3: Sincronizar base de datos (crear tablas)
     if (baseDatosConectada) {
       console.log('🔄 Sincronizando base de datos (creando tablas)...');
       await sincronizarBaseDatos();
+      console.log('📋 Nuevos modelos agregados:');
+      console.log('   - credenciales_academicas');
+      console.log('   - experiencia_laboral');
+      console.log('   - habilidades');
     }
     
-    // PASO 3: Iniciar el servidor web
+    // PASO 4: Iniciar el servidor web
     app.listen(PUERTO, () => {
       console.log('');
       console.log('🎉 ==========================================');
@@ -193,6 +222,12 @@ async function iniciarServidor() {
       console.log(`   GET  http://localhost:${PUERTO}/estado  - Estado del servidor`);
       console.log(`   GET  http://localhost:${PUERTO}/info    - Información del proyecto`);
       console.log('');
+      console.log('📊 Modelos disponibles en la base de datos:');
+      console.log('   - usuarios (sesión 2)');
+      console.log('   - credenciales_academicas (sesión 3)');
+      console.log('   - experiencia_laboral (sesión 3)');
+      console.log('   - habilidades (sesión 3)');
+      console.log('');
       console.log('🔄 Para detener el servidor: Ctrl + C');
       console.log('');
     });
@@ -203,6 +238,7 @@ async function iniciarServidor() {
     console.log('   - Verifica que el puerto 3000 no esté en uso');
     console.log('   - Revisa el archivo .env');
     console.log('   - Verifica las dependencias con: npm install');
+    console.log('   - Asegúrate de haber creado los nuevos archivos de modelos');
     process.exit(1); // Salir del programa si hay error crítico
   }
 }
