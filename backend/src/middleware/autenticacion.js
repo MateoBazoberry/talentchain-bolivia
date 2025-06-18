@@ -111,7 +111,5 @@ const verificarTipoUsuario = (tiposPermitidos) => {
 };
 
 // Exportar middlewares
-module.exports = {
-  verificarToken,
-  verificarTipoUsuario
-};
+module.exports = verificarToken;  // Export por defecto
+module.exports.verificarTipoUsuario = verificarTipoUsuario;

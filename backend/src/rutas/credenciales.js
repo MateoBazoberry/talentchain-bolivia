@@ -7,7 +7,8 @@ const express = require('express');
 const router = express.Router();
 
 // Importar middleware de autenticación
-const { verificarToken, verificarTipoUsuario } = require('../middleware/autenticacion');
+const verificarToken = require('../middleware/autenticacion');
+const { verificarTipoUsuario } = require('../middleware/autenticacion');
 
 // Importar controladores
 const {

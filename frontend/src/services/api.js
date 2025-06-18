@@ -1,5 +1,5 @@
 // ========================================
-// SERVICIO DE API - CONEXIÓN CON BACKEND
+// SERVICIO DE API COMPLETO - TODAS LAS FUNCIONALIDADES SESIÓN 4
 // ========================================
 
 // URL base de nuestro backend
@@ -64,12 +64,6 @@ export async function loginUsuario(credenciales) {
     const data = await response.json();
     console.log('📥 Respuesta del backend:', data);
     
-    // 🔍 NUEVOS LOGS PARA DEBUG:
-    console.log('🔑 ¿Tiene token?', !!data.token);
-    console.log('🎫 Token value:', data.token);
-    console.log('👤 ¿Tiene usuario?', !!data.usuario);
-    console.log('📊 Estructura completa:', JSON.stringify(data, null, 2));
-    
     if (!response.ok) {
       throw new Error(data.mensaje || 'Error en el login');
     }
@@ -105,33 +99,10 @@ export async function loginUsuario(credenciales) {
 }
 
 /**
- * Verificar si el usuario está autenticado
+ * Obtener token actual
  */
-export function estaAutenticado() {
-  const token = localStorage.getItem('talentchain_token');
-  const usuario = localStorage.getItem('talentchain_usuario');
-  
-  if (!token || !usuario) {
-    return false;
-  }
-  
-  try {
-    // Verificar si el token ha expirado (básico)
-    const payload = JSON.parse(atob(token.split('.')[1]));
-    const ahora = Date.now() / 1000;
-    
-    if (payload.exp < ahora) {
-      // Token expirado
-      cerrarSesion();
-      return false;
-    }
-    
-    return true;
-  } catch (error) {
-    console.error('Error verificando token:', error);
-    cerrarSesion();
-    return false;
-  }
+export function obtenerToken() {
+  return localStorage.getItem('talentchain_token');
 }
 
 /**
@@ -148,13 +119,6 @@ export function obtenerUsuarioActual() {
 }
 
 /**
- * Obtener token actual
- */
-export function obtenerToken() {
-  return localStorage.getItem('talentchain_token');
-}
-
-/**
  * Cerrar sesión
  */
 export function cerrarSesion() {
@@ -164,7 +128,7 @@ export function cerrarSesion() {
 }
 
 /**
- * Hacer petición autenticada (para futuras APIs)
+ * Hacer petición autenticada
  */
 export async function peticionAutenticada(url, opciones = {}) {
   const token = obtenerToken();
@@ -188,7 +152,6 @@ export async function peticionAutenticada(url, opciones = {}) {
     
     if (!response.ok) {
       if (response.status === 401) {
-        // Token inválido o expirado
         cerrarSesion();
         throw new Error('Sesión expirada');
       }
@@ -206,7 +169,6 @@ export async function peticionAutenticada(url, opciones = {}) {
 // FUNCIONES DE CREDENCIALES ACADÉMICAS
 // ========================================
 
-// Obtener todas las credenciales del usuario
 export async function obtenerCredenciales() {
   try {
     return await peticionAutenticada('/credenciales');
@@ -216,17 +178,6 @@ export async function obtenerCredenciales() {
   }
 }
 
-// Obtener una credencial específica por ID
-export async function obtenerCredencialPorId(id) {
-  try {
-    return await peticionAutenticada(`/credenciales/${id}`);
-  } catch (error) {
-    console.error('Error obteniendo credencial por ID:', error);
-    throw error;
-  }
-}
-
-// Crear nueva credencial académica
 export async function crearCredencial(datosCredencial) {
   try {
     return await peticionAutenticada('/credenciales', {
@@ -239,20 +190,6 @@ export async function crearCredencial(datosCredencial) {
   }
 }
 
-// Actualizar credencial existente
-export async function actualizarCredencial(id, datosCredencial) {
-  try {
-    return await peticionAutenticada(`/credenciales/${id}`, {
-      method: 'PUT',
-      body: JSON.stringify(datosCredencial)
-    });
-  } catch (error) {
-    console.error('Error actualizando credencial:', error);
-    throw error;
-  }
-}
-
-// Eliminar credencial
 export async function eliminarCredencial(id) {
   try {
     return await peticionAutenticada(`/credenciales/${id}`, {
@@ -265,7 +202,218 @@ export async function eliminarCredencial(id) {
 }
 
 // ========================================
-// FUNCIONES DE PRUEBA
+// NUEVAS FUNCIONES - APIS DE EMPRESAS
+// ========================================
+
+/**
+ * Obtener estadísticas del dashboard de empresa
+ */
+export async function obtenerEstadisticasEmpresa() {
+  try {
+    return await peticionAutenticada('/empresa/dashboard');
+  } catch (error) {
+    console.error('Error obteniendo estadísticas de empresa:', error);
+    throw error;
+  }
+}
+
+/**
+ * Crear nueva oferta laboral
+ */
+export async function crearOfertaLaboral(datosOferta) {
+  try {
+    return await peticionAutenticada('/empresa/ofertas', {
+      method: 'POST',
+      body: JSON.stringify(datosOferta)
+    });
+  } catch (error) {
+    console.error('Error creando oferta laboral:', error);
+    throw error;
+  }
+}
+
+/**
+ * Obtener ofertas de la empresa
+ */
+export async function obtenerOfertasEmpresa() {
+  try {
+    return await peticionAutenticada('/empresa/ofertas');
+  } catch (error) {
+    console.error('Error obteniendo ofertas de empresa:', error);
+    throw error;
+  }
+}
+
+/**
+ * Buscar candidatos
+ */
+export async function buscarCandidatos(filtros = {}) {
+  try {
+    const params = new URLSearchParams(filtros);
+    return await peticionAutenticada(`/empresa/candidatos?${params}`);
+  } catch (error) {
+    console.error('Error buscando candidatos:', error);
+    throw error;
+  }
+}
+
+/**
+ * Verificar experiencia laboral de ex-empleado
+ */
+export async function verificarExEmpleado(datosVerificacion) {
+  try {
+    return await peticionAutenticada('/empresa/verificaciones', {
+      method: 'POST',
+      body: JSON.stringify(datosVerificacion)
+    });
+  } catch (error) {
+    console.error('Error verificando ex-empleado:', error);
+    throw error;
+  }
+}
+
+/**
+ * Obtener verificaciones hechas por la empresa
+ */
+export async function obtenerVerificacionesEmpresa() {
+  try {
+    return await peticionAutenticada('/empresa/verificaciones');
+  } catch (error) {
+    console.error('Error obteniendo verificaciones de empresa:', error);
+    throw error;
+  }
+}
+
+// ========================================
+// NUEVAS FUNCIONES - APIS DE UNIVERSIDADES
+// ========================================
+
+/**
+ * Obtener estadísticas del dashboard de universidad
+ */
+export async function obtenerEstadisticasUniversidad() {
+  try {
+    return await peticionAutenticada('/universidad/dashboard');
+  } catch (error) {
+    console.error('Error obteniendo estadísticas de universidad:', error);
+    throw error;
+  }
+}
+
+/**
+ * Obtener credenciales pendientes de verificación
+ */
+export async function obtenerCredencialesPendientes() {
+  try {
+    return await peticionAutenticada('/universidad/credenciales/pendientes');
+  } catch (error) {
+    console.error('Error obteniendo credenciales pendientes:', error);
+    throw error;
+  }
+}
+
+/**
+ * Verificar credencial académica
+ */
+export async function verificarCredencialAcademica(credencialId, verificado, comentarios = '') {
+  try {
+    return await peticionAutenticada(`/universidad/credenciales/${credencialId}/verificar`, {
+      method: 'PUT',
+      body: JSON.stringify({
+        verificado: verificado,
+        comentarios: comentarios
+      })
+    });
+  } catch (error) {
+    console.error('Error verificando credencial académica:', error);
+    throw error;
+  }
+}
+
+/**
+ * Registrar graduado oficial
+ */
+export async function registrarGraduadoOficial(datosGraduado) {
+  try {
+    return await peticionAutenticada('/universidad/graduados', {
+      method: 'POST',
+      body: JSON.stringify(datosGraduado)
+    });
+  } catch (error) {
+    console.error('Error registrando graduado oficial:', error);
+    throw error;
+  }
+}
+
+/**
+ * Obtener estadísticas de empleabilidad
+ */
+export async function obtenerEstadisticasEmpleabilidad() {
+  try {
+    return await peticionAutenticada('/universidad/estadisticas/empleabilidad');
+  } catch (error) {
+    console.error('Error obteniendo estadísticas de empleabilidad:', error);
+    throw error;
+  }
+}
+
+/**
+ * Obtener graduados con estado laboral
+ */
+export async function obtenerGraduadosConEstadoLaboral(filtros = {}) {
+  try {
+    const params = new URLSearchParams(filtros);
+    return await peticionAutenticada(`/universidad/graduados?${params}`);
+  } catch (error) {
+    console.error('Error obteniendo graduados con estado laboral:', error);
+    throw error;
+  }
+}
+
+// ========================================
+// NUEVAS FUNCIONES - SISTEMA DE MATCHING
+// ========================================
+
+/**
+ * Obtener ofertas recomendadas para profesional
+ */
+export async function obtenerOfertasRecomendadas(filtros = {}) {
+  try {
+    const params = new URLSearchParams(filtros);
+    return await peticionAutenticada(`/matching/ofertas-recomendadas?${params}`);
+  } catch (error) {
+    console.error('Error obteniendo ofertas recomendadas:', error);
+    throw error;
+  }
+}
+
+/**
+ * Obtener candidatos recomendados para una oferta
+ */
+export async function obtenerCandidatosRecomendados(ofertaId, filtros = {}) {
+  try {
+    const params = new URLSearchParams(filtros);
+    return await peticionAutenticada(`/matching/oferta/${ofertaId}/candidatos-recomendados?${params}`);
+  } catch (error) {
+    console.error('Error obteniendo candidatos recomendados:', error);
+    throw error;
+  }
+}
+
+/**
+ * Calcular matching específico
+ */
+export async function calcularMatchingEspecifico(profesionalId, ofertaId) {
+  try {
+    return await peticionAutenticada(`/matching/profesional/${profesionalId}/oferta/${ofertaId}`);
+  } catch (error) {
+    console.error('Error calculando matching específico:', error);
+    throw error;
+  }
+}
+
+// ========================================
+// FUNCIONES DE PRUEBA Y UTILIDADES
 // ========================================
 
 /**
@@ -280,6 +428,36 @@ export async function probarConexion() {
     return true;
   } catch (error) {
     console.error('❌ Error conectando con backend:', error);
+    return false;
+  }
+}
+
+/**
+ * Verificar si el usuario está autenticado
+ */
+export function estaAutenticado() {
+  const token = obtenerToken();
+  const usuario = localStorage.getItem('talentchain_usuario');
+  
+  if (!token || !usuario) {
+    return false;
+  }
+  
+  try {
+    // Verificar si el token ha expirado (básico)
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    const ahora = Date.now() / 1000;
+    
+    if (payload.exp < ahora) {
+      // Token expirado
+      cerrarSesion();
+      return false;
+    }
+    
+    return true;
+  } catch (error) {
+    console.error('Error verificando token:', error);
+    cerrarSesion();
     return false;
   }
 }

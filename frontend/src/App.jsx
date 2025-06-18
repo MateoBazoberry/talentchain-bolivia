@@ -1,12 +1,18 @@
-import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link, useNavigate, Navigate } from 'react-router-dom';
 import './App.css'
 import Login from './pages/login';
 import Dashboard from './pages/Dashboard';
 import Register from './pages/Register';
+import React, { useState, useEffect } from 'react';
+
+// NUEVOS IMPORTS - Dashboards específicos
+import DashboardEmpresa from './pages/DashboardEmpresa';
+import DashboardUniversidad from './pages/DashboardUniversidad';
 
 // 🏠 COMPONENTE HOME - Página principal
 function Home() {
   const navigate = useNavigate();
+  
   // Funciones para las tarjetas - navegación directa sin alertas
   const handleProfesionales = () => {
     // Navegar directamente al registro como profesional
@@ -85,7 +91,49 @@ function Home() {
   );
 }
 
-// 🎯 COMPONENTE PRINCIPAL APP - Con Router completo
+// ========================================
+// 🎯 COMPONENTE DASHBOARD INTELIGENTE MULTI-ROL
+// ========================================
+function DashboardInteligente() {
+  // Version simplificada que evita loops de navegación
+  const token = localStorage.getItem('talentchain_token');
+  
+  console.log('🔥 DashboardInteligente - Token existe:', !!token);
+  
+  if (!token) {
+    console.log('🔥 No hay token, redirigiendo a login');
+    return <Navigate to="/login" replace />;
+  }
+
+  try {
+    // Decodificar token JWT
+    const tokenData = JSON.parse(atob(token.split('.')[1]));
+    console.log('🔥 Usuario decodificado:', tokenData);
+    
+    // Mostrar dashboard según tipo de usuario
+    switch (tokenData.tipoUsuario) {
+      case 'profesional':
+        console.log('🔥 Mostrando Dashboard Profesional');
+        return <Dashboard />;
+      case 'empresa':
+        console.log('🔥 Mostrando Dashboard Empresa');
+        return <DashboardEmpresa />;
+      case 'institucion':
+        console.log('🔥 Mostrando Dashboard Universidad');
+        return <DashboardUniversidad />;
+      default:
+        console.log('🔥 Tipo de usuario no reconocido:', tokenData.tipoUsuario);
+        return <div>Tipo de usuario no reconocido: {tokenData.tipoUsuario}</div>;
+    }
+  } catch (error) {
+    console.error('🔥 Error decodificando token:', error);
+    localStorage.removeItem('token');
+    localStorage.removeItem('usuario');
+    return <Navigate to="/login" replace />;
+  }
+}
+
+// 🎯 COMPONENTE PRINCIPAL APP - Con Router completo y multi-rol
 function App() {
   return (
     <Router>
@@ -96,11 +144,16 @@ function App() {
         {/* 🔐 Ruta de la página de login */}
         <Route path="/login" element={<Login />} />
         
-        {/* 📊 Ruta del dashboard */}
-        <Route path="/dashboard" element={<Dashboard />} />
-        
         {/* 📝 Ruta de registro */}
         <Route path="/register" element={<Register />} />
+        
+        {/* 📊 Ruta del dashboard INTELIGENTE - Detecta tipo de usuario automáticamente */}
+        <Route path="/dashboard" element={<DashboardInteligente />} />
+        
+        {/* 📊 Rutas específicas por tipo de usuario (opcionales - acceso directo) */}
+        <Route path="/dashboard/profesional" element={<Dashboard />} />
+        <Route path="/dashboard/empresa" element={<DashboardEmpresa />} />
+        <Route path="/dashboard/universidad" element={<DashboardUniversidad />} />
       </Routes>
     </Router>
   );
